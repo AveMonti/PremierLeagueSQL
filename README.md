@@ -1,4 +1,3 @@
 ### PremierLeagueSQL
 
-
-<img src="/img/img.png" height="226" width="964" />
+<img src="/img/img.png" height="438" width="770" />
