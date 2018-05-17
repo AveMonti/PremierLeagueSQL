@@ -51,6 +51,25 @@ go
 
 ```
 
+* Procedura 3
+```
+create or alter function AvergageOnMatch (@Klub varchar(40))
+returns float
+as
+begin
+	declare @average Float;
+
+	Set @average = (select round(Punkty*1.00/Mecze,2) from Projekt.dbo.Ranking where Drużyna = @Klub);
+
+return @average;
+end
+
+select Drużyna, dbo.AvergageOnMatch(Drużyna)
+from Projekt.dbo.Ranking
+
+```
+
+
 * Select 1
 ```
 select b.[Drużyna],
