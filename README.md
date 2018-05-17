@@ -69,6 +69,47 @@ from Projekt.dbo.Ranking
 
 ```
 
+* Procedura 4
+```
+create or alter function getPayment (@SumaPodzialu INT,@BonusGol int, @Zawodnik varchar(100),@withPremium bit)
+returns float
+as
+begin
+	declare @basicAmount float;
+	declare @premiumGoals float;
+	declare @numberPlayers int;
+	declare @pozycja int;
+	declare @Klub varchar(100);
+
+
+	set @Klub=(select b.Drużyna from Projekt.dbo.Zawodnik a inner join Projekt.dbo.Ranking b on a.ID_Klubu= b.Pozycja where a.Piłkarz=@Zawodnik)
+	set @numberPlayers= (select count(*) from Projekt.dbo.Zawodnik a inner join Projekt.dbo.Ranking b on a.ID_Klubu= b.Pozycja where b.Drużyna=@Klub);
+	set @pozycja=(select Pozycja from Projekt.dbo.Ranking where Drużyna=@Klub);
+	if @pozycja<=5
+		set @basicAmount=(0.08*@SumaPodzialu)/@numberPlayers;
+	else
+		if @pozycja >15
+			set @basicAmount=(0.05*@SumaPodzialu)/@numberPlayers;
+		else
+		 	set @basicAmount=(0.02*@SumaPodzialu)/@numberPlayers;
+
+	if @withPremium=1
+	 set @premiumGoals=@BonusGol*(select gole from Projekt.dbo.Strzelcy where Zawodnik=@Zawodnik);
+	else
+	 set @premiumGoals=0;
+return round(@basicAmount,2)+coalesce(@premiumGoals,0);
+end
+go
+
+ --Premia
+select Projekt.dbo.getPayment(10000,1000,'Romelu Lukaku',1);
+--brakpremii
+select Projekt.dbo.getPayment(10000,1000,'Romelu Lukaku',0);
+
+
+select top(4)  Zawodnik, Projekt.dbo.getPayment(10000,1000,Zawodnik,1) from [Projekt].[dbo].[Strzelcy];
+
+```
 
 * Select 1
 ```
