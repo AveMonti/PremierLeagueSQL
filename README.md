@@ -2,13 +2,24 @@
 
 <img src="/img/img.png" height="438" width="770" />
 
-* Zwroc drużynę z rankingu klubow ktora ma wiecej punktow niż 50
+* Select 1
 ```
-SELECT Drużyna from ranking_klubow WHERE punkty > 50
+create or alter procedure [TopStadion] @City int
+as
+if @City<=(select count(*) from [Projekt].dbo.[Stadion])
+begin
+select TOP (@City) [Miasto]
+      ,[Stadion]
+      ,[Pojemność]
+  from [Projekt].dbo.[Stadion]
+  order by [Pojemność]
+end
+else
+	begin
+		select 'Za duża liczba'
+	end
 
-```
-* Zwroc zawodnik z strzelcy ktora ma wiecej niż 20 gooli
-```
-SELECT zawodnik FROM strzelcy WHERE gole > 20.0
+Exec TopStadion 3
+go
 
 ```
