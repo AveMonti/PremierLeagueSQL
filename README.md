@@ -128,7 +128,7 @@ go
 CREATE UNIQUE CLUSTERED INDEX IDX_V1
     ON vChelsea (Numer);
 
-select * from vChelsea
+select * from vChelsea 
 
 ```
 
