@@ -111,6 +111,28 @@ select top(4)  Zawodnik, Projekt.dbo.getPayment(10000,1000,Zawodnik,1) from [Pro
 
 ```
 
+* Widok Indeksowany
+```
+Use Projekt;
+go
+
+create view vChelsea
+WITH SCHEMABINDING
+AS
+select a.Poz, a.Piłkarz,a.Numer
+	from dbo.Zawodnik a
+	inner join dbo.Ranking b
+	on a.ID_Klubu=b.Pozycja
+	where b.Drużyna='Chelsea Londyn';
+go
+CREATE UNIQUE CLUSTERED INDEX IDX_V1
+    ON vChelsea (Numer);
+
+select * from vChelsea
+
+```
+
+
 * Select 1
 ```
 select b.[Drużyna],
